@@ -6,11 +6,23 @@ import MenuItem from "./MenuItem";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useCurrentUser from "@/app/hooks/useCurrentUser";
+import useRentModal from "@/app/hooks/useRentModal";
+
 import { signOut } from "next-auth/react";
 const UserMenu = () => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
+  const rentModal = useRentModal();
+
   const user = useCurrentUser((state) => state.user);
+
+  const onRent = useCallback(() => {
+    if(!user) {
+      // return loginModal.onOpen()
+    }
+    rentModal.onOpen()
+
+  },[user,loginModal])
   const [isOpen, setIsOpen] = useState(false);
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
@@ -25,7 +37,7 @@ const UserMenu = () => {
             '
       >
         <div
-          onClick={() => {}}
+          onClick={onRent}
           className='
           hidden md:block text-sm
           font-semibold
@@ -80,7 +92,7 @@ const UserMenu = () => {
                 <MenuItem onClick={() => {}} label='My favorites' />{" "}
                 <MenuItem onClick={() => {}} label='My reservations' />{" "}
                 <MenuItem onClick={() => {}} label='My properties' />
-                <MenuItem onClick={() => {}} label='Airbnb my home' />
+                <MenuItem onClick={onRent} label='Airbnb my home' />
                 <hr />
                 <MenuItem onClick={() => signOut()} label='Sign out' />
               </>
